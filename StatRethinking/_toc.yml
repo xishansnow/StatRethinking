@@ -1,10 +1,26 @@
-# Table of contents
-# Learn more at https://jupyterbook.org/customize/toc.html
-
-format: jb-article
+format: jb-book
 root: intro
-sections:
-- file: content
-  sections:
-  - file: markdown
-  - file: notebooks
+parts:
+  - caption: 基础知识与工具
+    chapters:
+    - file: chapter01-TheGolemOfPrague
+    - file: chapter02-SmallWorldsAndLargeWorlds
+    - file: chapter03-SamplingTheImaginary
+    - file: chapter04-GeocentricModels
+    - file: chapter05-TheManyVariablesAndTheSpuriousWaffles
+    - file: chapter06-TheHaunted_DAG_AndTheCausalTerror
+    - file: chapter07-UlyssesCompass
+    - file: chapter08-ConditionalManatees
+    - file: chapter09-MarkovChainMonteCarlo
+    - file: chapter10-BigEntropyAndTheGeneralizedLinearModel
+  - caption: 应用统计模型
+    chapters:
+    - file: chapter11-God_Spiked_The_Integers
+    - file: chapter12-MonstersAndMixtures
+    - file: chapter13-ModelsWithMemory
+    - file: chapter14-AdventuresInCovariance
+    - file: chapter15-MissingDataAndOtherOpportunities
+    - file: chapter16-GeneralizedLinearMadness    
+  - caption: 展望
+    chapters: 
+    - file: chapter17-HOROSCOPES
