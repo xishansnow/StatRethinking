@@ -338,22 +338,28 @@
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#id5">
-   6.2 后处理偏差
+   6.2 处理后偏差
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#id6">
-     6.2.1 先验诞生了。
+     6.2.1 先验的诞生
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#id7">
-     6.2.2.结果被阻止。
+     6.2.2.结果被阻止
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#d">
-     6.2.3.真菌和d-分离。
+     6.2.3.真菌和
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       D-分离
+      </span>
+     </code>
+     。
     </a>
    </li>
   </ul>
@@ -365,7 +371,7 @@
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#id9">
-     6.3.1 虚假悲伤的碰撞者。
+     6.3.1 虚假悲伤的冲突
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
@@ -377,7 +383,7 @@
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#id10">
-   6.4 面对困扰
+   6.4 直面混乱
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
@@ -387,7 +393,12 @@
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#id12">
-     6.4.3 后门华夫饼。
+     6.4.3 后门的
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       华夫饼
+      </span>
+     </code>
     </a>
    </li>
   </ul>
@@ -448,9 +459,9 @@ leg\_right &amp; \sim height \times leg\_prop + \cal{N}(0,0.02)\\
 \[\begin{split}
 \begin{align*}
 height &amp;\sim \cal{N}(\mu,\sigma) \\
-\mu &amp;\sim a + bl * \text{leg\_left} + br *\text{ leg\_right}\\
+\mu &amp;\sim a + `bL` * \text{leg\_left} + br *\text{ leg\_right}\\
 a &amp;\sim \cal{N}(10,100)\\
-bl  &amp; \sim  \cal{N}(2,10)\\
+`bL`  &amp; \sim  \cal{N}(2,10)\\
 br  &amp; \sim  \cal{N}(2,10)\\
 \sigma &amp;\sim \text{Exp}(1.0)
 \end{align*}
@@ -486,33 +497,35 @@ y_{i} &amp; \sim \operatorname{Normal}\left(\mu_{i}, \sigma\right) \\
 </div>
 <div class="section" id="id4">
 <h3>6.1.2 多重共线性的“牛奶”<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h3>
-<p>在腿长示例中，很容易看出在模型中包含两条腿有点傻。但在真实数据集中出现的问题是，我们可能无法预料到高度相关的预测变量之间会发生冲突。因此，我们可能会错误地解读后验分布，认为这两个预测变量都不重要。在本节中，我们将通过真实数据查看此问题的示例。</p>
-<p>让我们回到本章前面的灵长类动物奶质数据</p>
-<p>在本例中，我们关注 perc.fat（脂肪百分比）和 perc.lactose（乳糖百分比）变量。我们将使用这些来模拟总能量含量，kcal.per.g。上面的代码已经将这三个变量标准化了。你将使用这三个变量来探索多重共线性的自然情况。请注意，这些列中没有缺失值 NA，因此此处无需提取完整案例。但是你可以放心，quap 与像 lm 这样鲁莽的函数不同，它永远不会默默地丢弃案例。</p>
-<p>首先将 kcal.per.g 建模为 perc.fat 和 perc.lactose 的函数，但采用两个二元回归。回顾第 5 章（第 147 页），对这些先验的讨论。</p>
-<p>bF 和 bL 的后验分布本质上是彼此的镜像。 bF 的后验平均值与 bL 的平均值为负时一样正。两者都是狭窄的后验分布，几乎完全位于零的一侧或另一侧。考虑到每个预测因子与结果的强关联，我们可以得出结论，这两个变量都是跨物种牛奶总能量的可靠预测因子。脂肪越多，牛奶中的卡路里就越多。乳糖越多，牛奶中的卡路里越少。但是看看当我们将两个预测变量放在同一个回归模型中时会发生什么</p>
+<p>在腿长的示例中，很容易看出在模型中包含两条腿有点傻。但在真实数据集中，我们很难预料到预测变量之间会发生冲突。因此可能会错误地解读后验分布，认为这两个预测变量都不重要。</p>
+<p>在本节中，我们将通过真实数据查看此问题的一个示例。让我们回到灵长类动物的奶质数据。</p>
+<p>在该示例中，我们关注 <code class="docutils literal notranslate"><span class="pre">perc.fat</span></code>（脂肪百分比）和 <code class="docutils literal notranslate"><span class="pre">perc.lactose</span></code>（乳糖百分比）变量，并使用这些量来模拟总能量含量 <code class="docutils literal notranslate"><span class="pre">kcal.per.g</span></code>。上面的代码已经将这三个变量归一化为 <code class="docutils literal notranslate"><span class="pre">F</span></code>、<code class="docutils literal notranslate"><span class="pre">L</span></code>、<code class="docutils literal notranslate"><span class="pre">K</span></code>。你将使用这三个变量来探索多重共线性的一种自然情况。请注意，这些列中没有缺失数据 <code class="docutils literal notranslate"><span class="pre">NA</span></code>，因此无需提取全部样本数据。但你可以放心，<code class="docutils literal notranslate"><span class="pre">quap</span></code> 函数不同于 <code class="docutils literal notranslate"><span class="pre">lm</span></code> 函数，它永远不会悄悄地丢弃样本。</p>
+<p>首先将 <code class="docutils literal notranslate"><span class="pre">kcal.per.g</span></code> 建模为 <code class="docutils literal notranslate"><span class="pre">perc.fat</span></code> 和 <code class="docutils literal notranslate"><span class="pre">perc.lactose</span></code> 的函数，但采用两个一元回归。回顾第 5 章中对这些先验的讨论。</p>
+<p><code class="docutils literal notranslate"><span class="pre">bF</span></code> 和 <code class="docutils literal notranslate"><span class="pre">bL</span></code> 的后验分布本质上是彼此的镜像。 <code class="docutils literal notranslate"><span class="pre">bF</span></code> 的后验均值与 <code class="docutils literal notranslate"><span class="pre">bL</span></code> 的后验均值几乎互为相反数。而且两者都是狭窄的后验分布，几乎完全位于零的某一侧。考虑到每个预测因子与结果均有强关联，我们可以得出结论，这两个变量都是跨物种牛奶总能量的可靠预测因子。脂肪越多，牛奶中的卡路里就越多；乳糖越多，牛奶中的卡路里越少。但当我们将两个预测变量放在同一个回归模型中时会发生什么呢？</p>
+<p>现在 <code class="docutils literal notranslate"><span class="pre">bF</span></code> 和 <code class="docutils literal notranslate"><span class="pre">bL</span></code> 的后验均值都更接近于零了，并且这两个参数的标准差是前面两个独立模型标准差的两倍。可以看出，这种现象与腿长示例中相同。发生的情况是变量 <code class="docutils literal notranslate"><span class="pre">perc.fat</span></code> 和 <code class="docutils literal notranslate"><span class="pre">perc.lactose</span></code> 包含许多相同的信息，以至于它们几乎是彼此的替代品。因此，当将两者包含在同一个回归中时，后验分布最终会画出同样合理的 <code class="docutils literal notranslate"><span class="pre">bF</span></code> 和 <code class="docutils literal notranslate"><span class="pre">bL</span></code> 的直线型联合分布。在脂肪和乳糖的情况下，这两个变量基本上形成一个单一的变化轴，查看这一点的最简单方法是使用<code class="docutils literal notranslate"><span class="pre">变量对的散点图</span></code>。</p>
 <p><img alt="" src="https://gitee.com/XiShanSnow/imagebed/raw/master/images/stats-20211215204843-2539.webp" /></p>
 <blockquote>
-<div><p>图 6.3 来自灵长类动物奶质数据的总能量、脂肪百分比和乳糖百分比变量的成对图。脂肪百分比和乳糖百分比彼此呈强烈负相关，提供的信息大致相同</p>
+<div><p>图 6.3 来自灵长类动物奶质数据的总能量、脂肪百分比和乳糖百分比变量的成对图。脂肪百分比和乳糖百分比彼此呈强烈负相关，提供的信息大致相同。</p>
 </div></blockquote>
-<p>现在 bF 和 bL 的后验均值更接近于零。并且这两个参数的标准偏差是双变量模型（m6.3 和 m6.4）的两倍。</p>
-<p>这与腿长示例中的统计现象相同。发生的情况是变量 perc.fat 和 perc.lactose 包含许多相同的信息。它们几乎是彼此的替代品。因此，当你将两者都包含在回归中时，后验分布最终会描述同样合理的 bF 和 bL 组合的长脊。在脂肪和乳糖的情况下，这两个变量基本上形成一个单一的变化轴。看到这一点的最简单方法是使用对图</p>
-<p>我在图 6.3 中显示了这个图。沿着对角线，变量被标记。在对角线外的每个散点图中，纵轴变量是同一行标记的变量，横轴变量是同一列标记的变量。例如，图 6.3 中第一行的两个散点图是 kcal.per.g（垂直）对 perc.fat（水平），然后是 kcal.per.g（垂直）对 perc.lactose（水平）。请注意，脂肪百分比与结果呈正相关，而乳糖百分比与结果呈负相关。现在查看中间行中最右侧的散点图。该图是脂肪百分比（垂直）与乳糖百分比（水平）的散点图。请注意，这些点几乎完全沿着一条直线排列。这两个变量是负相关的，而且非常强，以至于它们几乎是多余的。两者都有助于预测 kcal.per.g，但一旦你已经了解另一个，则两者都没有帮助。</p>
-<p>在科学文献中，你可能会遇到各种应对多重共线性的狡猾方法。他们中很少有人采取因果关系的观点。有些领域实际上教学生在拟合模型之前检查成对相关性，以识别和丢弃高度相关的预测因子。这是个错误。成对相关不是问题。重要的是条件关联——而不是相关性。即便如此，正确的做法将取决于导致共线性的原因。仅凭数据中的关联不足以决定做什么。</p>
-<p>牛奶示例中可能发生的情况是哺乳动物母亲必须遵守的牛奶成分的核心权衡。如果一个物种经常哺乳，那么牛奶往往是水汪汪的，能量低。这种牛奶含糖量高（乳糖）。相反，如果一个物种很少在短时间内哺乳，那么牛奶的能量需要更高。这种牛奶的脂肪含量非常高。这意味着一个像这样的因果模型</p>
-<p>中央权衡决定了牛奶的密度 D。我们没有观察到这个变量，所以它被圈起来了。然后测定脂肪 F 和乳糖 L。最后，F 和 L 的组成决定了卡路里 K。如果我们可以测量 D，或者有一个进化和经济模型来根据物种的其他方面来预测它，那将比通过回归绊倒更好.</p>
-<p>多重共线性问题是拟合模型问题家族的一员，该家族有时称为不可识别性。当参数不可识别时，这意味着数据和模型的结构无法估计参数的值。有时这个问题是由模型编码错误引起的，但许多重要类型的模型都存在不可识别或弱可识别的参数，即使编码完全正确。即使模型是正确的，大自然也不欠我们简单的推理。</p>
-<p>通常，无法保证可用数据包含有关感兴趣参数的大量信息。如果这是真的，你的贝叶斯机将返回与先验非常相似的后验分布。因此，将后验与先验进行比较可能是一个好主意，这是一种查看模型从数据中提取多少信息的方法。当后验和先验相似时，并不意味着计算是错误的——你得到了你所问问题的正确答案。但它可能会让你问一个更好的问题</p>
+<p>我在图 6.3 中显示了随机变量两两之间的散点图矩阵。该矩阵对角线上为变量名，对角线外的每个散点图中，纵轴变量是该行标记的变量，横轴变量是该列标记的变量。例如，图 6.3 中第一行的两个散点图是 <code class="docutils literal notranslate"><span class="pre">kcal.per.g</span></code>（垂直）对 <code class="docutils literal notranslate"><span class="pre">perc.fat</span></code>（水平），然后是 <code class="docutils literal notranslate"><span class="pre">kcal.per.g</span></code>（垂直）对 <code class="docutils literal notranslate"><span class="pre">perc.lactose</span></code>（水平）。</p>
+<p>请注意，图中明确显示，脂肪百分比与总能量呈正相关，而乳糖百分比与总能量呈负相关。现在查看中间行中最右侧的散点图。该图是脂肪百分比（垂直）与乳糖百分比（水平）的散点图，这些点几乎完全沿着一条直线排列，表明这两个变量之间呈非常强的负相关，以至于它们几乎是多余的。两者都有助于预测 <code class="docutils literal notranslate"><span class="pre">kcal.per.g</span></code>，但同时了解两者似乎并没有带来足够的好处。</p>
+<p>在科技文献中，你可能会遇到各种应对多重共线性的方法，但其中很少有人会采取因果关系的观点。有些领域实际上直接教导学生，在拟合模型之前先检查变量两两之间的相关性，以识别或放弃高度相关的预测因子。虽然这种做法比较常见，但其实是错误的。<strong>预测变量之间存在相关性并不是问题，更重要的是条件关联（<code class="docutils literal notranslate"><span class="pre">Conditional</span> <span class="pre">Associations</span></code>）而不是相关（ <code class="docutils literal notranslate"><span class="pre">Correlation</span></code>）</strong>。但即使意识到这一点，最终的正确做法也将取决于导致共线性的原因，仅凭数据中的关联不足以决定做什么。</p>
+<p>牛奶示例中可能存在的一种原因是：在哺乳动物中存在一种母性动物必须遵守的乳液成分中心权衡法则。如果一个物种经常哺乳，那么奶往往是水汪汪的，奶的能量需求较低，其含糖量高（乳糖）。相反，如果一个物种很少哺乳，那么必须在短时间内完成哺乳，奶的能量需要更高，其脂肪含量就会非常高。这意味着一个下面的因果图：</p>
+<p>中心权衡法则决定了奶浓度  <code class="docutils literal notranslate"><span class="pre">D</span></code>的重要性，而我们并没有观测到这个变量，所以在图中它被圈起来了。我们只测定了脂肪 <code class="docutils literal notranslate"><span class="pre">F</span></code> 和乳糖 <code class="docutils literal notranslate"><span class="pre">L</span></code> ，并用 <code class="docutils literal notranslate"><span class="pre">F</span></code> 和 <code class="docutils literal notranslate"><span class="pre">L</span></code> 的组合去决定卡路里 <code class="docutils literal notranslate"><span class="pre">K</span></code>；此时如果我们可以测量 <code class="docutils literal notranslate"><span class="pre">D</span></code> ，或者有一个模型能够根据物种的其他要素来预测 <code class="docutils literal notranslate"><span class="pre">D</span></code>，那将会得到一个比当前回归模型更好的结果。</p>
+<p>多重共线性问题是<code class="docutils literal notranslate"><span class="pre">拟合问题家族</span></code>的一员，该家族有时被称为<strong>不可识别性（ <code class="docutils literal notranslate"><span class="pre">Non-Identifiability</span></code> ）</strong>。当参数不可识别时，意味着数据和模型的结构无法估计参数的值。有时该问题是由模型编码错误引起的，但许多重要的模型，即使在编码完全正确的情况下，也都会存在不可识别或弱可识别的参数。大家应该逐步习惯于以下情况：<strong>正确的模型不会天然地带来更加容易的推断</strong>。</p>
+<p>通常，无法保证可用数据中包含了有关参数的充分信息，如果其中关于参数的信息不足，则贝叶斯推断将返回与先验非常相似的后验分布。因此，将后验与先验进行比较可能是一个好主意，这是一种查看模型从数据中提取了多少信息的好方法。当后验和先验较为相似时，并不意味着计算是错误的，而可能代表出现了一个还没有意识到的问题。</p>
 </div>
 </div>
 <div class="section" id="id5">
-<h2>6.2 后处理偏差<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h2>
-<p>担心因忽略预测变量而导致的错误推论是很常见的。这种错误通常被称为遗漏变量偏差，前一章的例子说明了这一点。担心由包含变量引起的错误推论要少得多。但包括变量偏差是真实的。小心翼翼的随机实验和不受控制的观察性研究一样容易被破坏。盲目地将变量投入因果沙拉从来都不是一个好主意。</p>
-<p>包含变量偏差有多种形式。第一个是治疗后偏倚。 治疗后偏倚在所有类型的研究中都是一种风险。 “后处理”一词实际上来自对实验设计的思考。例如，假设你正在温室中种植一些植物。你想知道在不同抗真菌土壤处理下的生长差异，因为植物上的真菌往往会降低它们的生长。植物最初播种并发芽。他们的身高是测量出来的。然后应用不同的土壤处理。最后的措施是植物的高度和真菌的存在。这里有四个感兴趣的变量：初始高度、最终高度、处理和真菌的存在。</p>
-<p>最终高度是感兴趣的结果。但是模型中应该包含哪些其他变量？如果你的目标是对治疗进行因果推断，则不应包括真菌，因为它是治疗后效应。</p>
-<p>让我们模拟一些数据，使示例更加透明，看看当我们包含后处理变量时到底出了什么问题</p>
+<h2>6.2 处理后偏差<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h2>
+<blockquote>
+<div><p><code class="docutils literal notranslate"><span class="pre">处理后偏差</span></code> 可以解释为<code class="docutils literal notranslate"><span class="pre">包含处理后的效应变量而带来的偏差</span></code>，指在模型的预测变量中引入了经过处理以后的某些效应变量，进而导致整个模型出现了偏差。常出现在对治疗手段、处理方案的效果进行评估的场景中，往往会由于错误地将处理后的效应变量当做预测变量引入模型，进而导致整个模型出现偏差。</p>
+</div></blockquote>
+<p>“担心因为忽略了预测变量而导致错误推断” 是一种很正常的心态，这类错误通常被称为 <code class="docutils literal notranslate"><span class="pre">遗漏变量偏差（</span> <span class="pre">Omitted</span> <span class="pre">Variable</span> <span class="pre">Bias）</span></code>，前一章的例子说明了这一点。相反，“担心因为包含了某些变量而引起错误推断” 的情况比较少，但这种 <code class="docutils literal notranslate"><span class="pre">包含变量偏差（Included</span> <span class="pre">Variable</span> <span class="pre">Bias）</span></code>  却又是真实存在的。小心翼翼的随机实验和完全不受控的观测研究一样颇具危害性，盲目地将变量投入 <code class="docutils literal notranslate"><span class="pre">因果沙拉</span></code> 中不是一个好主意。</p>
+<p><code class="docutils literal notranslate"><span class="pre">包含变量偏差</span></code> 有多种形式。第一个是 <code class="docutils literal notranslate"><span class="pre">处理后偏差（Post-Treatment</span> <span class="pre">Bias）</span></code>，它在所有类型研究中都是一种风险。 “处理后” 一词实际上来自对实验设计的思考。例如：假设你正在温室中种植一些植物，想知道在经过不同抗真菌土壤处理后，植物生长的差异，因为植物上的真菌往往会减缓其生长。植物最初播种并发芽，测量得到其初始高度；然后应用不同的土壤处理手段；经过一段时间后，测量植物的高度和真菌的表现。因此，这里有四个感兴趣的变量：<code class="docutils literal notranslate"><span class="pre">初始高度</span></code>、<code class="docutils literal notranslate"><span class="pre">最终高度</span></code>、<code class="docutils literal notranslate"><span class="pre">处理手段</span></code> 和 <code class="docutils literal notranslate"><span class="pre">真菌的表现</span></code>。其中，<code class="docutils literal notranslate"><span class="pre">最终高度</span></code> 是感兴趣的结果，但模型中应该包含哪些预测变量呢？如果你的目标是对疗效进行因果推断，则不应包含 <code class="docutils literal notranslate"><span class="pre">真菌的表现</span></code> 这个变量，因为它是处理后的一种效应。</p>
+<p>让我们模拟一些数据，看看当包含 <code class="docutils literal notranslate"><span class="pre">处理后变量</span></code> 时到底出了什么问题</p>
 <div class="section" id="id6">
-<h3>6.2.1 先验诞生了。<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h3>
+<h3>6.2.1 先验的诞生<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h3>
 <p>在设计模型时，假装你没有上面的数据生成过程会有所帮助。在真正的研究中，你不会知道真正的数据生成过程。但是你会有很多科学信息来指导模型构建。因此，让我们花点时间认真对待这个模拟分析。</p>
 <p>我们知道时间 t = 1 的植物应该比时间 t = 0 的植物高，无论它们是在什么尺度上测量的。因此，如果我们将参数放在时间 t = 0 时的高度比例尺度上，而不是数据的绝对尺度上，我们可以更轻松地设置先验。为了使这更简单，让我们现在只关注高度变量，忽略预测变量。我们可能有一个线性模型，比如</p>
 <p>其中 h0,i 是植物 i 在 t =0 时刻的高度，h1,i 是它在 t =1 时刻的高度，p 是衡量 h0,i 与 h1,i 的比例的参数。更准确地说，p = h1,i/h0,i。如果 p =1，则从时间 t =0 到时间 t =1，植物根本没有变化。如果 p = 2，则它的高度增加了一倍。因此，如果我们将 p 的先验集中在 1 上，则意味着高度没有变化的期望。这比我们知道的要少。但是我们应该允许 p 小于 1，以防实验出现严重错误并且我们杀死所有植物。我们还必须确保 p &gt; 0，因为它是一个比例。回到第 4 章（第 96 页），我们使用了对数正态分布，因为它总是正的。让我们再用一个。如果我们使用 p∼Log-Normal(0,0.25)，先验分布看起来像</p>
@@ -541,12 +554,12 @@ p &amp;=\alpha+\beta_{T} T_{i}+\beta_{F} F_{i} \\
 <p>a 参数与之前的 p 相同。它具有几乎相同的后验。 bt 的边缘后验，治疗效果，完全为零，间隔很窄。治疗与生长无关。然而，这种真菌似乎损害了生长。鉴于我们知道治疗很重要，因为我们以这种方式构建了模拟，这里发生了什么？</p>
 </div>
 <div class="section" id="id7">
-<h3>6.2.2.结果被阻止。<a class="headerlink" href="#id7" title="Permalink to this headline">¶</a></h3>
+<h3>6.2.2.结果被阻止<a class="headerlink" href="#id7" title="Permalink to this headline">¶</a></h3>
 <p>问题是真菌主要是治疗的结果。这就是说真菌是治疗后的变量。因此，当我们控制真菌时，该模型隐含地回答了这个问题：一旦我们已经知道植物是否长出了真菌，土壤处理是否重要？答案是否定的，因为土壤处理通过减少真菌对生长产生影响。但我们实际上想知道，基于实验的设计，是处理对生长的影响。为了正确测量这一点，我们应该省略处理后的可变真菌。在这种情况下，推断是这样的</p>
 <p>现在治疗的影响显然是积极的，理应如此。控制治疗前的差异（如初始高度 h0）是有意义的，这可能会掩盖治疗的因果影响。但包括治疗后变量实际上可以掩盖治疗本身。这并不意味着你不想要同时包含处理和真菌的模型。包括真菌使处理系数归零这一事实表明，该处理完全符合预期的原因。它告诉我们机制。但是关于治疗的正确推断仍然取决于省略治疗后变量。</p>
 </div>
 <div class="section" id="d">
-<h3>6.2.3.真菌和d-分离。<a class="headerlink" href="#d" title="Permalink to this headline">¶</a></h3>
+<h3>6.2.3.真菌和 <code class="docutils literal notranslate"><span class="pre">D-分离</span></code>。<a class="headerlink" href="#d" title="Permalink to this headline">¶</a></h3>
 <p>从 DAG 的角度来看这个问题是有帮助的。在这种情况下，我将向你展示如何使用 dagitty R 包绘制它，因为我们现在将使用该包进行一些图形分析。</p>
 <p>因此，处理 T 会影响真菌 F 的存在，真菌 F 会影响时间 1 H1 的植物高度。时间 1 的株高也受时间 0 的株高 H0 的影响。这就是我们的 DAG。当我们在模型中包含 F（治疗后效应）时，我们最终会阻断从治疗到结果的路径。</p>
 <p>这是 DAG 的说法，一旦我们知道真菌状态，学习治疗不会告诉我们任何结果。一种更加 DAG 的说法是，对 F 的条件化会导致 d 分离。 “d”代表有向性。D-separation 意味着有向图中的某些变量与其他变量无关。没有连接它们的路径。在这种情况下，H1 与 T 分离，但仅当我们以 F 为条件时。以 F 为条件有效地阻止了有向路径 T → F → H1，使 T 和 H1 独立（d 分离）。在上一章中，当我们讨论隐含条件独立性时，你已经看到了这种陈述的符号 H1 ⊥⊥T|F。为什么会发生这种情况？ T 中没有关于 H1 的信息也没有在 F 中。所以一旦我们知道 F，学习 T 就不会提供关于 H1 的额外信息。你可以查询此 DAG 的隐含条件独立性</p>
@@ -559,34 +572,41 @@ p &amp;=\alpha+\beta_{T} T_{i}+\beta_{F} F_{i} \\
 </div>
 <div class="section" id="id8">
 <h2>6.3 冲突偏差<a class="headerlink" href="#id8" title="Permalink to this headline">¶</a></h2>
-<p>在本章的开头，我认为科学研究表明可信度和新闻价值之间存在负相关关系的必要条件是选择过程——资助和期刊审查——同时关注两者。现在我想解释这种相同的选择现象如何在统计模型中发生。当它发生时，它会严重扭曲我们的推论，这种现象称为对撞机偏差。</p>
-<p>让我们为这个例子考虑一个 DAG。该模型是可信度 (T) 和新闻价值 (N) 与提交给资助审查小组的研究提案群体无关。但它们都影响资金的选择（S）。这是图表：</p>
-<p>两个箭头进入 S 的事实意味着它是一个碰撞器。核心概念很容易理解：当你以对撞机为条件时，它会在其原因之间创建统计（但不一定是因果关系）关联。在这种情况下，一旦你了解到某个提案已被选中 (S)，那么了解其可信度 (T) 也会提供有关其新闻价值 (N) 的信息。为什么？因为，例如，如果一个选定的提案可信度低，那么它必须具有高新闻价值。否则它不会得到资助。反过来也是一样：如果提案的新闻价值较低，我们会推断它的可信度必须高于平均水平。否则它不会被选中进行资助。</p>
-<p>这是在选定提案的总体中产生 T 和 N 之间负相关的信息现象。这意味着我们必须注意选择我们的观察样本的过程，并且可能会扭曲变量之间的关联。但是，当你将碰撞器作为预测变量包含在内时，同样的现象也会在统计模型中产生误导性的关联。如果不小心，可能会做出错误的因果推断。让我们考虑一个扩展的例子。</p>
+<p>在本章开头，科学研究表明 “可信度和新闻价值之间存在负相关关系” 的必要条件是 “选择过程同时关注两者”。现在我想解释这种选择现象在统计模型中发生的原因。通常这种情况发生时，会严重扭曲我们的推断，此现象被称为<strong>冲突偏差（Collider Bias）</strong>。</p>
+<p>让我们为这个例子考虑一个 <code class="docutils literal notranslate"><span class="pre">DAG</span></code> 。该模型中的 <code class="docutils literal notranslate"><span class="pre">可信度</span> <span class="pre">(</span> <span class="pre">T</span> <span class="pre">)</span></code> 和 <code class="docutils literal notranslate"><span class="pre">新闻价值</span> <span class="pre">(N)</span></code> 与提交给资助审查小组的提案数量无关。但它们都影响 <code class="docutils literal notranslate"><span class="pre">资助选择（S）</span></code>。见下图：</p>
+<p>两个箭头均指向 <code class="docutils literal notranslate"><span class="pre">S</span></code>  意味着它是一个冲突。核心概念很容易理解：当你以冲突为条件时，它会在其原因之间创建统计上的关联（但不一定是因果关系）。在这种情况下，一旦你了解到某个提案已被选中 ( <code class="docutils literal notranslate"><span class="pre">S</span></code> )，那么了解其可信度  (<code class="docutils literal notranslate"><span class="pre">T</span></code>)  也会提供有关其新闻价值 ( <code class="docutils literal notranslate"><span class="pre">N</span></code> ) 的信息。为什么呢？</p>
+<p>因为，如果一个选定的提案可信度低，那么它必须具有高新闻价值，否则它不会得到资助。反过来也是一样，如果提案的新闻价值较低，我们会推断它的可信度必须高于平均水平，否则它也不会被选中。</p>
+<p>这是在选定提案的总体中产生 <code class="docutils literal notranslate"><span class="pre">T</span></code> 和 <code class="docutils literal notranslate"><span class="pre">N</span></code> 之间负相关的信息现象。这意味着我们必须注意选择观测样本的过程，并且选择过程可能会扭曲变量之间的关联。但是，当你将冲突包含在预测变量内时，同样的现象也会在统计模型中产生误导性的关联。如果不小心，可能会做出错误的因果推断。</p>
+<p>让我们考虑一个扩展的例子。</p>
 <div class="section" id="id9">
-<h3>6.3.1 虚假悲伤的碰撞者。<a class="headerlink" href="#id9" title="Permalink to this headline">¶</a></h3>
-<p>考虑一下衰老如何影响幸福的问题。如果我们对人们进行了一项对他们的幸福程度进行评分的大型调查，那么年龄是否与幸福有关？如果是这样，这种关联是因果关系吗？在这里，我想向你展示如何控制看似合理的幸福混淆实际上会导致对年龄影响的推断产生偏差。</p>
-<p>假设，只是为了挑衅，个人的平均幸福是一种在出生时就确定并且不会改变的特征随着年龄。然而，幸福确实会影响一个人的生活。这些事件之一是婚姻。更幸福的人更有可能结婚。另一个影响婚姻的变量是年龄：你活得越久，你最终结婚的可能性就越大。将这三个变量放在一起，这就是因果模型：</p>
-<p>幸福（H）和年龄（A）都导致婚姻（M）。因此，婚姻是一个对撞机。即使幸福和年龄之间没有因果关系，如果我们以婚姻为条件——这意味着，如果我们将它作为回归的预测因素包括在内——那么它就会导致年龄和幸福之间存在统计关联。这可能会误导我们认为幸福会随着年龄而变化，而实际上它是恒定的。</p>
-<p>为了让你相信这一点，让我们再做一次模拟。模拟在这些例子中很有用，因为只有在这些时候我们才知道真正的因果模型。如果一个程序无法在模拟示例中找出真相，我们不应该相信它在真实示例中。这次我们将进行更高级的模拟，使用基于代理的衰老和婚姻模型来生成用于回归的模拟数据集。模拟设计如下：
-(1) 每年有 20 人出生，其幸福值分布均匀。
-(2) 每一年，每个人都会变老一岁。幸福不会改变。
-(3) 年满 18 岁时，个人可以结婚。每年结婚的几率与个人的幸福感成正比。
-(4) 结婚后，个人保持婚姻状态。
-(5) 65岁以后，个人离开样本。 （他们搬到了西班牙。）</p>
-<p>我已经把这个算法写进了 rethinking 包中。你可以将其运行 1000 年并收集结果数据</p>
-<p>这些数据包括从出生到 65 岁各个年龄段的 1300 人。变量对应于上述 DAG 中的变量，模拟本身服从 DAG。</p>
-<p>我在图 6.4 中绘制了这些数据，将每个人显示为一个点。填充点为已婚人士。年龄在水平方向，幸福在垂直方向，最幸福的人在顶部。在 18 岁时，他们可以结婚，然后每年都会有越来越多的人结婚。因此，随着年龄的增长，更多的人结婚了。但在所有年龄段，最幸福的人都更有可能结婚。</p>
+<h3>6.3.1 虚假悲伤的冲突<a class="headerlink" href="#id9" title="Permalink to this headline">¶</a></h3>
+<p>考虑一下衰老如何影响幸福的问题。如果我们进行了一项对人们幸福程度进行评分的大型调查，那么年龄是否与幸福有关？如果有关，这种关联是因果关系吗？在这里，我想向你展示，如何通过控制看似合理的幸福混淆变量，导致对年龄影响的错误推断。</p>
+<p>假设个人的平均幸福是一种在出生时就确定、不会随着年龄而改变的特征。虽然幸福不会随年龄而改变，但幸福确实会影响一个人的生活，其中给一个重要事件就是婚姻。更幸福的人更有可能结婚。此外，另一个影响婚姻的变量是年龄：你活得越久，最终结婚的可能性就越大。如果将这三个变量放在一起，就形成了一个因果模型：</p>
+<p><code class="docutils literal notranslate"><span class="pre">幸福（H）</span></code> 和 <code class="docutils literal notranslate"><span class="pre">年龄（A）</span></code> 都导致 <code class="docutils literal notranslate"><span class="pre">婚姻（M）</span></code> 。因此，<code class="docutils literal notranslate"><span class="pre">婚姻</span></code> 是一个冲突。即使 <code class="docutils literal notranslate"><span class="pre">幸福</span></code> 和<code class="docutils literal notranslate"><span class="pre">年龄</span></code>之间没有因果关系，如果以<code class="docutils literal notranslate"><span class="pre">婚姻</span></code>为条件 —— 即将<code class="docutils literal notranslate"><span class="pre">婚姻</span></code>作为回归的预测变量 —— 那么它就会导致 <code class="docutils literal notranslate"><span class="pre">年龄</span></code> 和 <code class="docutils literal notranslate"><span class="pre">幸福</span></code> 之间存在统计关联。这会误导我们认为 <code class="docutils literal notranslate"><span class="pre">幸福</span></code> 会随着 <code class="docutils literal notranslate"><span class="pre">年龄</span></code> 而变化，但实际上它是恒定的。</p>
+<p>为了让你相信这一点，让我们再做一次模拟。这次将进行更高级的模拟，使用基于代理的 <code class="docutils literal notranslate"><span class="pre">衰老</span></code> 和 <code class="docutils literal notranslate"><span class="pre">婚姻</span></code> 模型来生成用于回归的模拟数据集。模拟设计如下：</p>
+<ul class="simple">
+<li><p>(1) 每年有 20 人出生，其幸福值分布均匀。</p></li>
+<li><p>(2) 每一年的每个人都会变老一岁，但幸福值不会改变。</p></li>
+<li><p>(3) 年满 18 岁时，个人可以结婚；每年结婚的几率与个人幸福值成正比。</p></li>
+<li><p>(4) 结婚后，个人保持婚姻状态。</p></li>
+<li><p>(5) 65岁后，个人离开样本 。</p></li>
+</ul>
+<p>我已经把这个算法写进了 <code class="docutils literal notranslate"><span class="pre">rethinking</span></code> 包中。你可以运行并收集 <span class="math notranslate nohighlight">\(1000\)</span> 年的结果数据。 这些数据包括从出生到 <span class="math notranslate nohighlight">\(65\)</span> 岁各个年龄段的 <span class="math notranslate nohighlight">\(1300\)</span> 人。变量对应于上述 <code class="docutils literal notranslate"><span class="pre">DAG</span></code> 中的变量，模拟本身服从 <code class="docutils literal notranslate"><span class="pre">DAG</span></code>。</p>
+<p>图 6.4 中绘制了这些模拟数据，每个人显示为一个点。其中，填充点为已婚人士；水平方向为年龄，垂直方向为幸福，则最幸福的人在顶部。在 <span class="math notranslate nohighlight">\(18\)</span> 岁时，这些人可以结婚，然后每年都会有越来越多的人结婚。因此，随着年龄增长，更多的人结婚了。但在所有年龄段，最幸福的人都更有可能结婚。</p>
 <p><img alt="" src="https://gitee.com/XiShanSnow/imagebed/raw/master/images/stats-20211215210729-f56a.webp" /></p>
 <blockquote>
-<div><p>图 6.4 模拟数据，假设幸福是均匀分布的，永远不会改变。每个点都是一个人。已婚个体用填充的蓝点显示。在 18 岁以后的每个年龄段，最幸福的人都更有可能结婚。在晚年，更多的人倾向于结婚。婚姻状况是年龄和幸福的对撞机：A → M ← H。如果我们在回归中以婚姻为条件，它会误导我们认为幸福会随着年龄的增长而下降</p>
+<div><p>图 6.4 模拟数据，假设幸福是均匀分布的，永远不会改变。每个点都是一个人。已婚个体用填充的蓝点显示。在 <span class="math notranslate nohighlight">\(18\)</span> 岁以后的每个年龄段，最幸福的人都更有可能结婚。在晚年，更多的人倾向于结婚。此示例中，<code class="docutils literal notranslate"><span class="pre">婚姻状况</span></code>是<code class="docutils literal notranslate"><span class="pre">年龄</span></code>和<code class="docutils literal notranslate"><span class="pre">幸福</span></code>的冲突：<span class="math notranslate nohighlight">\(A → M ← H\)</span>。如果在回归中以婚姻为条件，它会误导我们认为<code class="docutils literal notranslate"><span class="pre">幸福</span></code>会随着<code class="docutils literal notranslate"><span class="pre">年龄</span></code>的增长而下降。</p>
 </div></blockquote>
-<p>假设你遇到这些数据并想询问年龄是否与幸福有关。你不知道真正的因果模型。但是你有理由认为婚姻状况可能会令人困惑。如果已婚人士平均而言或多或少幸福，那么你需要以婚姻状况为条件，以推断年龄与幸福之间的关系。</p>
+<p>假设你碰到这些数据并想分析年龄是否与幸福有关，而且你并不知道真正的因果模型。你有理由认为婚姻状况可能会令人困惑。如果已婚人士平均更幸福，那么你需要以婚姻状况为条件，推断年龄与幸福之间的关系。</p>
 <p>因此，让我们考虑一个多元回归模型，该模型旨在推断年龄对幸福的影响，同时控制婚姻状况。这只是一个简单的多元回归，就像本章和上一章中的其他回归一样。线性模型是这样的：</p>
-<p>其中mid[i]是个体i婚姻状况的指标，1表示单身，2表示已婚。这只是第 4 章中的分类变量策略。当我们使用多个截距，每个类别一个截距时，比使用指示变量更容易制作先验。</p>
-<p>现在我们应该尽我们的职责并考虑先决条件。让我们首先考虑斜率 βA，因为我们如何缩放预测变量 A 将决定截距的含义。我们将只关注 18 岁或 18 岁以上的成人样本。想象一下，年龄和幸福感之间有很强的关系，幸福感在 18 岁时达到最大值，在 65 岁时达到最小值。如果我们重新调整年龄，使 18 到 65 的范围是一个单位，会更容易。这将做到</p>
-<p>现在这个新变量 A 的范围是从 0 到 1，其中 0 是 18 岁，1 是 65 岁。在这些数据中，幸福是一个任意的尺度，从 -2 到 +2。因此，我们想象中的最强关系，将幸福从最大到最小，具有 (2 -(-2))/1 = 4 的上升斜率。请记住，正态分布 95% 的质量包含在 2 个标准偏差内。因此，如果我们设置 4 之前一半的标准偏差，我们就是说我们预计 95% 的合理斜率小于最大强度。这不是一个很强的先验，但同样，它至少有助于将推理限制在现实范围内。现在是拦截。每个α是当Ai=0时μi的值。在这种情况下，这意味着 18 岁。所以我们需要让 α 覆盖所有幸福分数。 Normal(0,1) 会将 95% 的质量放在 -2 到 +2 区间内。</p>
-<p>最后，让我们近似后验。我们还需要构建婚姻状况指数变量。我会这样做，然后立即提供 quap 代码。</p>
+<div class="math notranslate nohighlight">
+\[
+ \mu_i = \alpha_{MID[i]} + \beta_A A[i]
+ \]</div>
+<p>其中 <span class="math notranslate nohighlight">\(MID[i]\)</span> 是个体 <span class="math notranslate nohighlight">\(i\)</span> 的 婚姻状况指标，<span class="math notranslate nohighlight">\(1\)</span> 表示单身，<span class="math notranslate nohighlight">\(2\)</span> 表示已婚。当我们使用多个截距，每个类别一个截距时，会比使用指示变量更容易设置先验。</p>
+<p>现在应该尽我们的职责并考虑先决条件。首先考虑斜率 <span class="math notranslate nohighlight">\( β_A\)</span>，因为如何缩放预测变量 <span class="math notranslate nohighlight">\(A\)</span> 将决定截距的含义。我们将只关注 <span class="math notranslate nohighlight">\(18\)</span> 岁或 <span class="math notranslate nohighlight">\(18\)</span> 岁以上的成人样本。想象一下，年龄和幸福感之间有很强的关联，幸福感在 <span class="math notranslate nohighlight">\(18\)</span> 岁时达到最大值，在 <span class="math notranslate nohighlight">\(65\)</span> 岁时达到最小值。如果我们重新调整年龄，对 <span class="math notranslate nohighlight">\(18\)</span> 到 <span class="math notranslate nohighlight">\(65\)</span> 的范围做归一化，可能会更容易一些。</p>
+<p>现在这个新变量 <span class="math notranslate nohighlight">\(A\)</span> 的范围是从 <span class="math notranslate nohighlight">\(0\)</span> 到 <span class="math notranslate nohighlight">\(1\)</span>，其中 <span class="math notranslate nohighlight">\(0\)</span> 是 <span class="math notranslate nohighlight">\(18\)</span> 岁，<span class="math notranslate nohighlight">\(1\)</span> 是 <span class="math notranslate nohighlight">\(65\)</span> 岁。在这些数据中，幸福是一个从 <span class="math notranslate nohighlight">\(-2\)</span> 到 <span class="math notranslate nohighlight">\(+2\)</span> 的任意尺度。因此，我们想象中的最强关系，将幸福从最大到最小，具有 <span class="math notranslate nohighlight">\((2 -(-2))/1 = 4\)</span> 的上升斜率。请记住，正态分布 <span class="math notranslate nohighlight">\(95%\)</span> 的质量包含在 <span class="math notranslate nohighlight">\(2\)</span> 个标准差内。因此，如果我们设置 <span class="math notranslate nohighlight">\(4\)</span> 之前一半的标准差，我们就是说我们预计 <span class="math notranslate nohighlight">\(95%\)</span> 的合理斜率小于最大强度。这不是一个很强的先验，但同样，它至少有助于将推理限制在现实范围内。现在是拦截。每个 <span class="math notranslate nohighlight">\(α\)</span> 是当 <span class="math notranslate nohighlight">\(A_i=0\)</span> 时 <span class="math notranslate nohighlight">\(μ_i\)</span> 的值。在这种情况下，这意味着 <span class="math notranslate nohighlight">\(18\)</span> 岁。所以我们需要让 <span class="math notranslate nohighlight">\(α\)</span> 覆盖所有幸福分数。 <span class="math notranslate nohighlight">\(Normal(0,1)\)</span> 会将 <span class="math notranslate nohighlight">\(95%\)</span> 的质量放在 <span class="math notranslate nohighlight">\(-2\)</span> 到 <span class="math notranslate nohighlight">\(+2\)</span> 区间内。</p>
+<p>最后，让我们近似后验。我们还需要构建婚姻状况指数变量。我会这样做，然后立即提供 <code class="docutils literal notranslate"><span class="pre">quap</span></code> 代码。</p>
 <p>该模型非常确定年龄与幸福感呈负相关。我们想将此模型的推论与忽略婚姻状况的模型进行比较。下面是边缘后验分布的比较：</p>
 <p>相比之下，这个模型发现年龄和幸福之间没有关联</p>
 <p>当我们以碰撞器为条件时，上面的模式正是我们应该期待的。碰撞器是婚姻状态。这是年龄和幸福的共同结果。结果，当我们以它为条件时，我们会在这两个原因之间产生虚假的关联。因此，对于 m6.9 模型，年龄与幸福感呈负相关。但这只是统计关联，而不是因果关联。一旦我们知道某人是否已婚，那么他们的年龄确实会提供有关他们幸福程度的信息。</p>
@@ -595,7 +615,7 @@ p &amp;=\alpha+\beta_{T} T_{i}+\beta_{F} F_{i} \\
 </div>
 <div class="section" id="dag">
 <h3>6.3.2 闹鬼的 DAG<a class="headerlink" href="#dag" title="Permalink to this headline">¶</a></h3>
-<p>碰撞器偏差源于对常见结果的调节，如前一个示例所示。如果我们可以对图表进行排序，我们就可以避免它。但要看到潜在的对撞机并不总是那么容易，因为可能存在无法衡量的原因。未测量的原因仍然会导致对撞机偏差。所以我很遗憾地说，我们还必须考虑我们的 DAG 可能会闹鬼的可能性。</p>
+<p>碰撞器偏差源于对常见结果的调节，如前一个示例所示。如果我们可以对图表进行排序，我们就可以避免它。但要看到潜在的冲突并不总是那么容易，因为可能存在无法衡量的原因。未测量的原因仍然会导致冲突偏差。所以我很遗憾地说，我们还必须考虑我们的 DAG 可能会闹鬼的可能性。</p>
 <p>例如，假设我们想推断父母 (P) 和祖父母 (G) 对孩子 (C) 教育成就的直接影响。93 由于祖父母也可能影响他们自己孩子的教育，所以箭头 G →P .到目前为止，这听起来很容易。它的结构类似于我们上一章的离婚率示例：</p>
 <p>但是假设对父母和他们的孩子有无法衡量的共同影响，例如社区，祖父母（他们现在住在西班牙南部海岸）没有这些影响。然后我们的 DAG 就会被未观察到的 U 所困扰</p>
 <p>现在 P 是 G 和 U 的共同结果，所以如果我们以 P 为条件，它会偏向关于 G → C 的推断，即使我们永远不会测量 U。我不希望这个事实立即显而易见。因此，让我们爬过一个定量的例子。</p>
@@ -619,25 +639,25 @@ p &amp;=\alpha+\beta_{T} T_{i}+\beta_{F} F_{i} \\
 </div>
 </div>
 <div class="section" id="id10">
-<h2>6.4 面对困扰<a class="headerlink" href="#id10" title="Permalink to this headline">¶</a></h2>
-<p>在本章和前一章中，有几个例子说明了我们如何使用多元回归来处理混杂。但我们也看到了多重回归如何导致混淆——控制错误的变量会破坏推理。希望我已经成功地让你远离仅仅将所有内容添加到模型中并希望回归能够解决它，并激励你相信有效的推理是可能的，如果我们足够小心和足够的知识。</p>
-<p>但是哪些原理可以解释为什么有时省略变量有时添加变量会产生相同的现象？是否还有其他因果怪物潜伏在那里，困扰着我们的图表？我们需要一些原则来将这些示例结合在一起。</p>
-<p>让我们将混杂定义为结果 Y 与感兴趣的预测变量 X 之间的关联与实际情况不同的任何上下文，如果我们已经通过实验确定了 X.95 的值。例如，假设我们感兴趣教育 E 与工资 W 之间的关联。问题在于，在一个典型的人群中，有许多未观察到的变量 U 会影响 E 和 W。例如一个人住在哪里，他们的父母是谁，他们的朋友是谁。这就是 DAG 的样子</p>
-<p>如果我们在 E 上回归 W，因果效应的估计会被 U 混淆。它是混淆的，因为有两条路径连接 E 和 W：（1）E →W 和（2）E ←U →W .此处的“路径”仅表示你可以遍历以从一个变量到另一个变量的任何一系列变量，而忽略箭头的方向。这两条路径都在 E 和 W 之间建立了统计关联。但只有第一条路径是因果关系。第二条路径是非因果的。为什么？因为如果只有第二条路径存在，并且我们改变了 E，它不会改变 W。E 对 W 的任何因果影响仅在第一条路径上起作用。</p>
+<h2>6.4 直面混乱<a class="headerlink" href="#id10" title="Permalink to this headline">¶</a></h2>
+<p>在本章和前一章中，有几个例子说明了如何使用多元回归来处理混乱。但同时我们也看到了多元回归也可能导致混乱，一些控制错误的变量会破坏推断。希望我已经成功地让你远离了 “仅仅将所有因素添加到模型中，期望回归能解决所有问题” 的简单想法，并且已经使你相信 “如果能够保持足够的小心和充分的知识，有效推断是可能的”。</p>
+<p>但是哪些原理能够解释 “为何有时省略变量有时添加变量会产生相同的现象” ？是否还有其他因果怪物潜伏在那里，困扰着我们？我们需要一些原则来将这些案例统一在一起。</p>
+<p>让我们将 <code class="docutils literal notranslate"><span class="pre">混乱</span></code> 定义为 “结果变量 <span class="math notranslate nohighlight">\(Y\)</span> 与预测变量 <span class="math notranslate nohighlight">\(X\)</span> 之间的关联不符合实际情况的任何上下文，如果已经通过实验确定了 <span class="math notranslate nohighlight">\(X\)</span> 的值”。例如，假设我们感兴趣<code class="docutils literal notranslate"><span class="pre">教育（E）</span> </code> 与 <code class="docutils literal notranslate"><span class="pre">工资</span> <span class="pre">（W）</span></code>  之间的关联。问题在于，在一个典型人群中，有许多未观测到的变量 <code class="docutils literal notranslate"><span class="pre">U</span></code> 会影响 <code class="docutils literal notranslate"><span class="pre">E</span></code> 和 <code class="docutils literal notranslate"><span class="pre">W</span></code> 。例如一个人住在哪里? 他们的父母是谁?他们的朋友是谁? 等。</p>
+<p>如果我们在 <code class="docutils literal notranslate"><span class="pre">E</span></code> 上回归 <code class="docutils literal notranslate"><span class="pre">W</span></code>，因果效应的估计会被 <code class="docutils literal notranslate"><span class="pre">U</span></code> 混淆。它是混淆的，因为有两条路径连接 <code class="docutils literal notranslate"><span class="pre">E</span></code> 和 <code class="docutils literal notranslate"><span class="pre">W</span></code>：（1）<span class="math notranslate nohighlight">\(E →W\)</span> 和（2）<span class="math notranslate nohighlight">\(E ←U →W\)</span> .此处的“路径”仅表示你可以遍历以从一个变量到另一个变量的任何一系列变量，而忽略箭头的方向。这两条路径都在 E 和 W 之间建立了统计关联。但只有第一条路径是因果关系。第二条路径是非因果的。为什么？因为如果只有第二条路径存在，并且我们改变了 E，它不会改变 W。E 对 W 的任何因果影响仅在第一条路径上起作用。</p>
 <p>我们如何隔离因果路径？最著名的解决方案是进行实验。如果我们可以随机分配教育水平，它会改变图表</p>
 <p>操纵消除了 U 对 E 的影响。当我们自己决定教育时，未观察到的变量不会影响教育。随着 U 的影响从 E 中移除，这将移除路径 E ← U → W。它阻塞了第二条路径。一旦路径被阻塞，信息在 E 和 W 之间只有一种方式，然后测量 E 和 W 之间的关联将产生因果影响的有用度量。操纵消除了混淆，因为它阻止了 E 和 W 之间的另一条路径。</p>
 <p>幸运的是，有统计方法可以获得相同的结果，而无需实际操纵 E。如何？最明显的是将 U 添加到模型中，以 U 为条件。为什么这也消除了混淆？因为它也阻断了 E 和 W 之间通过 U 的信息流。它阻断了第二条路径。</p>
 <p>要理解为什么对 U 的条件化会阻塞路径 E ←U →W，请将此路径孤立地视为一个完整模型。一旦你学习了 U，学习 E 也不会给你提供关于 W 的额外信息。例如，假设 U 是一个地区的平均财富。富裕的地区有更好的学校，导致更多的教育 E，以及更高薪的工作，导致更高的工资 W。如果你不知道一个人居住的地区，了解这个人的教育 E 将提供有关他们的信息工资 W，因为 E 和 W 跨地区相关。但是当你知道一个人居住在哪个区域之后，假设 E 和 W 之间没有其他路径，那么学习 E 就不会告诉你关于 W 的更多信息。独立，以 U 为条件。</p>
 <div class="section" id="id11">
 <h3>6.4.1 关闭后门。<a class="headerlink" href="#id11" title="Permalink to this headline">¶</a></h3>
-<p>阻止某些预测变量 X 和某些结果 Y 之间的混淆路径被称为关闭后门。我们不希望任何虚假关联通过进入预测变量 X 后面的非因果路径潜入。在上面的例子中，路径 E ←U →W 是一条后门路径，因为它以箭头并将 E 连接到 W。这条路径是非因果的——干预 E 不会通过这条路径导致 W 发生变化——但它仍然会在 E 和 W 之间产生关联。</p>
+<p><strong>阻止某些预测变量 X 和某些结果 Y 之间的混淆路径被称为关闭后门</strong>。我们不希望任何虚假关联通过进入预测变量 X 后面的非因果路径潜入。在上面的例子中，路径 E ←U →W 是一条后门路径，因为它以箭头并将 E 连接到 W。这条路径是非因果的——干预 E 不会通过这条路径导致 W 发生变化——但它仍然会在 E 和 W 之间产生关联。</p>
 <p>现在有一些好消息。给定一个因果 DAG，总是可以说必须控制哪些变量（如果有）才能关闭所有后门路径。也可以说明不得控制哪些变量，以避免产生新的混淆。而且——一些更好的消息——只有四种类型的变量关系可以组合形成所有可能的路径。所以你真的只需要了解四件事以及信息如何在每件事中流动。我将定义四种类型的关系。然后我们会做一些例子。</p>
 <p><img alt="" src="https://gitee.com/XiShanSnow/imagebed/raw/master/images/stats-20211215212647-f8cd.webp" /></p>
 <blockquote>
-<div><p>图 6.6。四大元素混杂。任何有向无环图都是根据这些基本关系构建的。从左到右：X ⊥⊥ Y|Z 在 Fork 和 Pipe 中，X ̸⊥⊥ Y|Z 在碰撞器中，对后代 D 的调节就像对其父 Z 的调节</p>
+<div><p>图 6.6。四大元素混乱。任何有向无环图都是根据这些基本关系构建的。从左到右：X ⊥⊥ Y|Z 在 Fork 和 Pipe 中，X ̸⊥⊥ Y|Z 在碰撞器中，对后代 D 的调节就像对其父 Z 的调节</p>
 </div></blockquote>
 <p>图 6.6 显示了每个元素关系的 DAG。每个 DAG，无论多么庞大和复杂，都是由这四种关系构建而成的。让我们考虑每个，从左到右。</p>
-<p>(1) 第一种关系是我们上面使用的关系，一个叉：X ←Z →Y。这是经典的混杂因素。在分叉中，某些变量 Z 是 X 和 Y 的共同原因，从而在它们之间产生相关性。如果我们以 Z 为条件，那么 learningX 不会告诉我们关于 Y 的任何信息。X 和 Y 是独立的，以 Z 为条件。</p>
+<p>(1) 第一种关系是我们上面使用的关系，一个叉：X ←Z →Y。这是经典的混乱因素。在分叉中，某些变量 Z 是 X 和 Y 的共同原因，从而在它们之间产生相关性。如果我们以 Z 为条件，那么 learningX 不会告诉我们关于 Y 的任何信息。X 和 Y 是独立的，以 Z 为条件。</p>
 <p>(2) 第二种关系是管道：X →Z →Y。我们在讨论植物生长示例和后处理偏差时看到了这一点：处理 X 影响真菌 Z，影响生长 Y。如果我们现在以 Z 为条件，我们也阻止了从 X 到 Y 的路径。所以在叉和一个管道，中间变量的条件阻塞了路径。</p>
 <p>(3) 第三种关系是碰撞器：X → Z ← Y。你在本章前面见过碰撞器。与其他两种类型的关系不同，在碰撞器中，X 和 Y 之间没有关联，除非你以 Z 为条件。以 Z 为条件，碰撞器变量，打开了路径。一旦路径打开，信息在X和Y之间流动。但是X和Y都不会对对方产生任何因果影响。</p>
 <p>(4)第四种关系是后代关系。后代是受另一个变量影响的变量。以后代为条件的部分条件取决于其父项。在图 6.6 中最右侧的 DAG 中，对 D 的调节也会在较小程度上对 Z 进行调节。原因是 D 有一些关于 Z 的信息。在这个例子中，这将部分打开从 X 到 Y 的路径，因为 Z是一个碰撞器。但一般来说，条件作用于后代的后果取决于其父母的性质。后代是常见的，因为通常我们不能直接测量一个变量，而只有一些代理。</p>
@@ -648,24 +668,24 @@ p &amp;=\alpha+\beta_{T} T_{i}+\beta_{F} F_{i} \\
 <p>(4) 如果有任何打开的后门路径，决定关闭它的条件（如果可能的话）。</p>
 <p>让我们考虑一些例子。</p>
 <p>对 C 或 A 进行调节就足够了。从效率的角度来看，对 C 进行条件化是更好的主意，因为它也有助于提高 X → Y 估计的精度。请注意，对 U 进行条件化也是有效的。但是因为我们告诉 dagitty U 是未观察到的（见上面的代码），它没有在调整集中暗示它。</p>
-<p>现在考虑通过 B 的第二条路径。这条路径确实包含一个碰撞器，U → B ← C。因此它已经关闭。这就是为什么上面的adjustmentSets没有提到B。事实上，如果我们在B上做条件，它会打开路径，造成混淆。然后我们对 X →Y 的推断会发生变化，但如果没有 DAG，我们将不知道这种变化是在帮助我们还是误导我们。包含变量会改变 X → Y 系数的事实并不总是意味着系数现在更好。你可以只使用对撞机。</p>
+<p>现在考虑通过 B 的第二条路径。这条路径确实包含一个碰撞器，U → B ← C。因此它已经关闭。这就是为什么上面的adjustmentSets没有提到B。事实上，如果我们在B上做条件，它会打开路径，造成混淆。然后我们对 X →Y 的推断会发生变化，但如果没有 DAG，我们将不知道这种变化是在帮助我们还是误导我们。包含变量会改变 X → Y 系数的事实并不总是意味着系数现在更好。你可以只使用冲突。</p>
 </div>
 <div class="section" id="id12">
-<h3>6.4.3 后门华夫饼。<a class="headerlink" href="#id12" title="Permalink to this headline">¶</a></h3>
+<h3>6.4.3 后门的<code class="docutils literal notranslate"><span class="pre">华夫饼</span></code><a class="headerlink" href="#id12" title="Permalink to this headline">¶</a></h3>
 <p>作为最后一个例子，让我们回到第 5 章介绍中的 Waffle House 和离婚率相关性。我们将创建一个 DAG，用它来找到最小的协变量集，并用它来推导出可测试的含义DAG。这很重要，因为有时你确实可以测试你的 DAG 是否与证据一致。仅凭数据永远无法告诉我们 DAG 何时正确。但是数据可以告诉我们 DAG 何时出错。</p>
 <p>我们对每个州的华夫饼屋数量对离婚率的总因果影响感兴趣。据推测，这两个变量之间的朴素相关是虚假的。阻止从华夫饼屋到离婚的后门路径的最小调整集是多少？让我们做一个图表</p>
 <p>在这张图中，S 是一个州是否在美国南部，A 是结婚年龄中位数，M 是结婚率，W 是华夫饼屋的数量，D 是离婚率。该图假设南部各州的结婚年龄较低 (S → A)、直接结婚率 (S → M) 和通过结婚年龄介导的结婚率 (S → A → M) 以及更多华夫饼 (S → W)。结婚年龄和结婚率都会影响离婚。</p>
 <p>W 和 D 之间有 3 条开放的后门路径。只需向后追溯，从 W 开始，到 D 结束。但请注意，所有后门路径都首先通过 S。因此我们可以通过以 S 为条件将它们全部关闭。仅此而已到它。你的电脑可以确认这个答案</p>
 <p>我们可以控制 A 和 M 或单独控制 S。</p>
 <p>这个 DAG 显然不能令人满意——它假设没有未观察到的混淆，这对于此类数据来说是不太可能的。但是我们仍然可以通过分析它来学习一些东西。虽然数据不能告诉我们一个图表是否正确，但它有时可以暗示一个图表是如何错误的。早些时候，我们讨论了条件独立性，这是模型的一些可测试含义。条件独立性是不相关的成对变量，一旦我们以其他变量集为条件。通过检查这些隐含的条件独立性，我们至少可以测试图的一些特征。</p>
-<p>既然你知道了基本混杂，你就可以自己推导出任何 DAG 的条件独立性了。你可以使用在查找和关闭后门时学到的相同路径逻辑来查找条件独立性。你只需要关注一对变量，找到连接它们的所有路径，并找出是否有任何一组变量可以关闭它们。在一个大图中，这很麻烦，因为有很多对变量和可能有很多路径。但是你的电脑很擅长做这样的事。在这种情况下，存在三个隐含的条件独立性</p>
+<p>既然你知道了基本混淆，你就可以自己推导出任何 <code class="docutils literal notranslate"><span class="pre">DAG</span></code> 的条件独立性了。你可以使用在查找和关闭后门时学到的相同路径逻辑来查找条件独立性。你只需要关注一对变量，找到连接它们的所有路径，并找出是否有任何一组变量可以关闭它们。在一个大图中，这很麻烦，因为有很多对变量和可能有很多路径。但是你的电脑很擅长做这样的事。在这种情况下，存在三个隐含的条件独立性</p>
 <p>将第一个读作“平均结婚年龄应该独立于 (<em>||</em>) 华夫饼屋，以 (|) 位于南部的州为条件。”第二，当我们同时以结婚年龄中位数、结婚率和华夫饼屋为条件时，离婚和在南方应该是独立的。最后，结婚率和华夫饼屋应该是独立的，条件是在南方。</p>
 <p>在本章末尾的练习题中，我将要求你评估这些含义，并尝试评估华夫饼屋对离婚的因果影响。</p>
 </div>
 </div>
 <div class="section" id="id13">
 <h2>6.4 总结<a class="headerlink" href="#id13" title="Permalink to this headline">¶</a></h2>
-<p>多元回归不是预言机，而只是一个傀儡。这是合乎逻辑的，但它所描述的关系是有条件的关联，而不是因果影响。因此，需要来自模型外部的额外信息来理解它。本章介绍了一些常见挫折的介绍性示例：多重共线性、后处理偏差和碰撞器偏差。这些挫折的解决方案可以在一个连贯的框架下组织起来，其中分析变量之间的假设因果关系以应对混淆。在所有情况下，因果模型都存在于统计模型之外，并且难以测试。然而，在没有实验的情况下，有可能得出有效的因果推断。这是个好消息，因为出于实际和道德原因，我们经常无法进行实验</p>
+<p>多元回归不是预言机，而只是一个傀儡。多元回归所描述的关系是有条件的关联，而不是因果效应。因此，需要来自模型外部的额外信息来理解它。本章介绍了一些常见问题的介绍性示例：<strong>多重共线性</strong>、<strong>处理后偏差</strong>和<strong>冲突偏差</strong>。这些问题可以在一个相干框架下被组织起来，并通过分析变量之间的假设因果关系来应对混淆。但应当清楚，在所有情况下，因果模型都存在于统计模型之外，而且难以测试。不过幸运的是，在没有实验的情况下，仍然有可能得出有效的因果推断。这无法进行实验的场景是一个好消息。</p>
 </div>
 </div>
 
