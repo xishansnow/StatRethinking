@@ -13,3 +13,5 @@ kernelspec:
 ---
 
 # 第 12 章 混合模型
+
+<style>p{text-indent:2em;2}</style>

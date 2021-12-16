@@ -13,3 +13,5 @@ kernelspec:
 ---
 
 # 第 10 章 最大熵与广义线性模型
+
+<style>p{text-indent:2em;2}</style>

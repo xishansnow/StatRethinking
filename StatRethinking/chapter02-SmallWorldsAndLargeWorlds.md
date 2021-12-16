@@ -13,3 +13,7 @@ kernelspec:
 ---
 
 # 第 2 章 统计建模
+
+<style>p{text-indent:2em;2}</style>
+
+

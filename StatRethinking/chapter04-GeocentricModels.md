@@ -13,3 +13,5 @@ kernelspec:
 ---
 
 # 第 4 章 基础线性模型
+
+<style>p{text-indent:2em;2}</style>
