@@ -12,6 +12,6 @@ kernelspec:
   name: python3
 ---
 
-# 第 11 章 计数变量的监督模型
+# 第 11 章 计数变量的监督学习
 
 <style>p{text-indent:2em;2}</style>

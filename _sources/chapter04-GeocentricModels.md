@@ -12,7 +12,7 @@ kernelspec:
   name: python3
 ---
 
-# 第 4 章 基础线性模型
+# 第 4 章 基础的线性模型
 
 <style>p{text-indent:2em;2}</style>
 

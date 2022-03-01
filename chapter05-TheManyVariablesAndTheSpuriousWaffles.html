@@ -37,22 +37,24 @@
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
     <script src="_static/doctools.js"></script>
-    <script src="_static/togglebutton.js"></script>
     <script src="_static/clipboard.min.js"></script>
     <script src="_static/copybutton.js"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
-    <script src="_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script>
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
+    <script src="_static/sphinx-book-theme.d59cb220de22ca1c485ebbdc042f0030.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
     <script async="async" src="_static/sphinx-thebe.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="第 6 章 因果推断难题" href="chapter06-TheHaunted_DAG_AndTheCausalTerror.html" />
-    <link rel="prev" title="第 4 章 基础线性模型" href="chapter04-GeocentricModels.html" />
+    <link rel="prev" title="第 4 章 基础的线性模型" href="chapter04-GeocentricModels.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="None">
     
@@ -119,7 +121,7 @@
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="chapter04-GeocentricModels.html">
-   第 4 章 基础线性模型
+   第 4 章 基础的线性模型
   </a>
  </li>
  <li class="toctree-l1 current active">
@@ -144,10 +146,7 @@
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="chapter09-MarkovChainMonteCarlo.html">
-   第 9 章
-   <strong>
-    MCMC
-   </strong>
+   第 9 章 马尔科夫链蒙特卡洛（ MCMC ）
   </a>
  </li>
  <li class="toctree-l1">
@@ -164,7 +163,7 @@
 <ul class="nav bd-sidenav">
  <li class="toctree-l1">
   <a class="reference internal" href="chapter11-God_Spiked_The_Integers.html">
-   第 11 章 计数变量的监督模型
+   第 11 章 计数变量的监督学习
   </a>
  </li>
  <li class="toctree-l1">
@@ -253,7 +252,7 @@
                 data-placement="left">.md</button></a>
         <!-- Download PDF via print -->
         <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
-            onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
+                onclick="printPdf(this)" data-toggle="tooltip" data-placement="left">.pdf</button>
     </div>
 </div>
 
@@ -310,7 +309,7 @@
         </div>
 
         <!-- Table of contents -->
-        <div class="d-none d-md-block col-md-2 bd-toc show">
+        <div class="d-none d-md-block col-md-2 bd-toc show noprint">
             
             <div class="tocsection onthispage pt-5 pb-3">
                 <i class="fas fa-list"></i> Contents
@@ -340,7 +339,40 @@
 </div>
     <div id="main-content" class="row">
         <div class="col-12 col-md-9 pl-md-3 pr-md-0">
-        
+            <!-- Table of contents that is only displayed when printing the page -->
+            <div id="jb-print-docs-body" class="onlyprint">
+                <h1>第 5 章 多元线性回归</h1>
+                <!-- Table of contents -->
+                <div id="print-main-content">
+                    <div id="jb-print-toc">
+                        
+                        <div>
+                            <h2> Contents </h2>
+                        </div>
+                        <nav aria-label="Page">
+                            <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#id2">
+   5.1 虚假的联系
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#id3">
+   5.2 被掩蔽的关系
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#id4">
+   5.3 定类变量
+  </a>
+ </li>
+</ul>
+
+                        </nav>
+                    </div>
+                </div>
+            </div>
+            
               <div>
                 
   <div class="tex2jax_ignore mathjax_ignore section" id="id1">
@@ -352,7 +384,7 @@
 <p>此类事故屡见不鲜。华夫饼屋与离婚相关并不奇怪，因为相关性一般并不奇怪。在大型数据集中，每对变量都具有统计上可辨别的非零相关性。但由于大多数相关性并不表示因果关系，我们需要工具来区分单纯的关联和因果关系的证据。这就是为什么如此多的努力致力于多元回归，使用多个预测变量来同时对结果进行建模。给出多重回归模型的原因包括：</p>
 <p>(1) 混杂的统计“控制”。混淆是在因果影响方面误导我们的东西——下一章会有更精确的定义。虚假的华夫饼和离婚相关性是一种混淆，南方性使得一个没有真正重要性的变量（华夫饼屋密度）看起来很重要。但混淆是多种多样的。它们可以像制造虚假效果一样容易地隐藏重要效果。</p>
 <p>(2) 多重复杂的因果关系。一个现象可能由多个同时发生的原因引起，并且原因可以以复杂的方式级联。由于一个原因可以隐藏另一个原因，因此必须同时测量它们。</p>
-<p>(3) 互动。一个变量的重要性可能取决于另一个变量。例如，植物受益于光和水。但是在没有任何一个的情况下，另一个根本没有好处。这种相互作用经常发生。对一个变量的有效推断通常取决于对其他变量的考虑。</p>
+<p>(3) 交互效应。一个变量的重要性可能取决于另一个变量。例如，植物受益于光和水。但是在没有任何一个的情况下，另一个根本没有好处。这种相互作用经常发生。对一个变量的有效推断通常取决于对其他变量的考虑。</p>
 <div class="section" id="id2">
 <h2>5.1 虚假的联系<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
 </div>
@@ -386,14 +418,14 @@
 
               </div>
               
-        
-            <!-- Previous / next buttons -->
+            
+                <!-- Previous / next buttons -->
 <div class='prev-next-area'> 
     <a class='left-prev' id="prev-link" href="chapter04-GeocentricModels.html" title="previous page">
         <i class="fas fa-angle-left"></i>
         <div class="prev-next-info">
             <p class="prev-next-subtitle">previous</p>
-            <p class="prev-next-title">第 4 章 基础线性模型</p>
+            <p class="prev-next-title">第 4 章 基础的线性模型</p>
         </div>
     </a>
     <a class='right-next' id="next-link" href="chapter06-TheHaunted_DAG_AndTheCausalTerror.html" title="next page">
@@ -404,19 +436,17 @@
     <i class="fas fa-angle-right"></i>
     </a>
 </div>
-        
+            
         </div>
     </div>
     <footer class="footer">
-    <div class="container">
-      <p>
-        
-          By Richard McElreath<br/>
-        
-            &copy; Copyright 2021.<br/>
-      </p>
-    </div>
-  </footer>
+  <p>
+    
+      By Richard McElreath<br/>
+    
+        &copy; Copyright 2021.<br/>
+  </p>
+</footer>
 </main>
 
 
