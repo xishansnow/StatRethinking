@@ -12,6 +12,6 @@ kernelspec:
   name: python3
 ---
 
-# 第 9 章 **MCMC**
+# 第 9 章 马尔科夫链蒙特卡洛（ MCMC ）
 
 <style>p{text-indent:2em;2}</style>
